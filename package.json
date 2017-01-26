@@ -1,0 +1,23 @@
+{
+  "name": "HayEquipo_Login",
+  "version": "1.0.0",
+  "description": "",
+  "engine": "node 6.9.4",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "postinstall": ""
+  },
+  "author": "Alejandro Raul Garcia",
+  "license": "ISC",
+  "browser": {},
+  "dependencies": {
+    "compression": "^1.6.2",
+    "express": "^4.14.0",
+    "passport": "^0.3.2",
+    "passport-facebook": "^2.1.1",
+    "request": "^2.79.0",
+    "require": "^2.4.20",
+    "xml2js": "^0.4.17"
+  }
+}

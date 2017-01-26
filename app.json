@@ -1,0 +1,9 @@
+{
+  "name":"web",
+  "description":"",
+  "scripts":{
+    "postdeploy":"node node_modules/.bin/gulp build && node node_modules/.bin/gulp min"
+  },
+  "env":{},
+  "addons":[]
+}

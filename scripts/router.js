@@ -8,18 +8,16 @@ var parseString = require('xml2js').parseString;
 
 var urlAuthLocal = "http://localhost:8082";
 var urlAuthHeroku = "https://hay-equipo-login.herokuapp.com";
-
 var urlAuth = urlAuthHeroku;
 console.log("URL Auth: "+ urlAuth);
 
 var urlFrontendLocal = "http://localhost:8081";
 var urlFrontendHeroku = "http://localhost:8081";
-
 var urlFrontend = urlFrontendLocal;
 console.log("URL frontend: "+ urlFrontend);
 
 var urlBackendSomee = "http://hayequipo.somee.com/hayequipo.asmx";
-var urlBackendLocal = "http://localhost:56563";
+var urlBackendLocal = "http://localhost:56563/hayequipo.asmx";
 var urlBackend = urlBackendSomee;
 console.log("URL backend: "+ urlBackend);
 
@@ -58,9 +56,6 @@ router.get('/auth/facebook/callback',
     passport.authenticate('facebook', { failureRedirect: '/login' }),
     function(req, res) {
         parseString(req.user, function(err, result) {
-            res.body({
-                Id : result.UserDTO.Id[0]
-            });
             res.redirect(urlFrontend + '/callback?id=' + encodeURIComponent(result.UserDTO.Id[0]) + '&Image=' + encodeURIComponent(result.UserDTO.Image[0]) + '&Centro=' + encodeURIComponent(result.UserDTO.Centro[0]) + '&Hash=' + encodeURIComponent(result.UserDTO.Hash[0]) + '&Email=' + encodeURIComponent(result.UserDTO.Email[0]));
         });
     });

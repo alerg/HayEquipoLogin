@@ -42,9 +42,11 @@ passport.use(new FacebookStrategy({
         request.post(urlBackend + '/signInWithProvider', { form: form },
             function optionalCallback(err, httpResponse, body) {
                 if (err) {
-                    return console.error('upload failed:', err);
+                    console.error('upload failed:', err);
+                    return done(err);
+                }else{
+                    return done(null, body);
                 }
-                return done(null, body);
             });
     }
 ));
@@ -56,7 +58,11 @@ router.get('/auth/facebook/callback',
     passport.authenticate('facebook', { failureRedirect: '/login' }),
     function(req, res) {
         parseString(req.user, function(err, result) {
-            res.redirect(urlFrontend + '/callback?id=' + encodeURIComponent(result.UserDTO.Id[0]) + '&Image=' + encodeURIComponent(result.UserDTO.Image[0]) + '&Centro=' + encodeURIComponent(result.UserDTO.Centro[0]) + '&Hash=' + encodeURIComponent(result.UserDTO.Hash[0]) + '&Email=' + encodeURIComponent(result.UserDTO.Email[0]));
+            if(err){
+                console.error("Error callback", err);
+            }else{
+                res.redirect(urlFrontend + '/callback?id=' + encodeURIComponent(result.UserDTO.Id[0]) + '&Image=' + encodeURIComponent(result.UserDTO.Image[0]) + '&Centro=' + encodeURIComponent(result.UserDTO.Centro[0]) + '&Hash=' + encodeURIComponent(result.UserDTO.Hash[0]) + '&Email=' + encodeURIComponent(result.UserDTO.Email[0]));
+            }
         });
     });
 

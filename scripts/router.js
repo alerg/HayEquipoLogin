@@ -13,7 +13,7 @@ console.log("URL Auth: "+ urlAuth);
 
 var urlFrontendLocal = "http://localhost:8081";
 var urlFrontendHeroku = "http://localhost:8081";
-var urlFrontend = urlFrontendLocal;
+var urlFrontend = urlFrontendHeroku;
 console.log("URL frontend: "+ urlFrontend);
 
 var urlBackendSomee = "http://hayequipo.somee.com/hayequipo.asmx";
@@ -60,6 +60,7 @@ router.get('/auth/facebook/callback',
         parseString(req.user, function(err, result) {
             if(err){
                 console.error("Error callback", err);
+                console.error("Transformed object", req.user);
             }else{
                 res.redirect(urlFrontend + '/callback?id=' + encodeURIComponent(result.UserDTO.Id[0]) + '&Image=' + encodeURIComponent(result.UserDTO.Image[0]) + '&Centro=' + encodeURIComponent(result.UserDTO.Centro[0]) + '&Hash=' + encodeURIComponent(result.UserDTO.Hash[0]) + '&Email=' + encodeURIComponent(result.UserDTO.Email[0]));
             }

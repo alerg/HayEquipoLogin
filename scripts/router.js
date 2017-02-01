@@ -5,21 +5,25 @@ var path = require('path');
 var passport = require('passport'),
     FacebookStrategy = require('passport-facebook').Strategy;
 var parseString = require('xml2js').parseString;
+var querystring = require('querystring');
 
 var urlAuthLocal = "http://localhost:8082";
 var urlAuthHeroku = "https://hay-equipo-login.herokuapp.com";
 var urlAuth = urlAuthHeroku;
-console.log("URL Auth: "+ urlAuth);
+
+console.log("URL Auth: " + urlAuth);
 
 var urlFrontendLocal = "http://localhost:8081";
-var urlFrontendHeroku = "http://localhost:8081";
+var urlFrontendHeroku = "http://hayequipo.herokuapp.com/";
 var urlFrontend = urlFrontendHeroku;
-console.log("URL frontend: "+ urlFrontend);
+
+console.log("URL frontend: " + urlFrontend);
 
 var urlBackendSomee = "http://hayequipo.somee.com/hayequipo.asmx";
 var urlBackendLocal = "http://localhost:56563/hayequipo.asmx";
 var urlBackend = urlBackendSomee;
-console.log("URL backend: "+ urlBackend);
+
+console.log("URL backend: " + urlBackend);
 
 passport.use(new FacebookStrategy({
         clientID: 1257983147557811,
@@ -39,12 +43,20 @@ passport.use(new FacebookStrategy({
             "photoURL": profile.photos[0].value,
             "token": accessToken
         }
-        request.post(urlBackend + '/signInWithProvider', { form: form },
+
+        var options = {
+            "url": urlBackend + '/signInWithProvider',
+            "headers": {
+                'Content-Type': "application/json; charset=utf-8",
+            },
+            "form": form
+        }
+        request.post(options,
             function optionalCallback(err, httpResponse, body) {
                 if (err) {
                     console.error('upload failed:', err);
                     return done(err);
-                }else{
+                } else {
                     return done(null, body);
                 }
             });
@@ -58,10 +70,10 @@ router.get('/auth/facebook/callback',
     passport.authenticate('facebook', { failureRedirect: '/login' }),
     function(req, res) {
         parseString(req.user, function(err, result) {
-            if(err){
+            if (err) {
                 console.error("Error callback", err);
                 console.error("Transformed object", req.user);
-            }else{
+            } else {
                 res.redirect(urlFrontend + '/callback?id=' + encodeURIComponent(result.UserDTO.Id[0]) + '&Image=' + encodeURIComponent(result.UserDTO.Image[0]) + '&Centro=' + encodeURIComponent(result.UserDTO.Centro[0]) + '&Hash=' + encodeURIComponent(result.UserDTO.Hash[0]) + '&Email=' + encodeURIComponent(result.UserDTO.Email[0]));
             }
         });

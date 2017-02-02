@@ -14,7 +14,7 @@ var urlAuth = urlAuthHeroku;
 console.log("URL Auth: " + urlAuth);
 
 var urlFrontendLocal = "http://localhost:8081";
-var urlFrontendHeroku = "http://hayequipo.herokuapp.com/";
+var urlFrontendHeroku = "http://hayequipo.herokuapp.com";
 var urlFrontend = urlFrontendHeroku;
 
 console.log("URL frontend: " + urlFrontend);
